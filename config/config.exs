@@ -7,6 +7,19 @@
 # General application configuration
 import Config
 
+config :fluxonui_start, :scopes,
+  user: [
+    default: true,
+    module: FluxonUIStart.Accounts.Scope,
+    assign_key: :current_scope,
+    access_path: [:user, :id],
+    schema_key: :user_id,
+    schema_type: :id,
+    schema_table: :users,
+    test_data_fixture: FluxonUIStart.AccountsFixtures,
+    test_setup_helper: :register_and_log_in_user
+  ]
+
 config :fluxonui_start,
   namespace: FluxonUIStart,
   ecto_repos: [FluxonUIStart.Repo],
