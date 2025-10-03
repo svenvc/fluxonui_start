@@ -19,12 +19,6 @@ defmodule FluxonUIStartWeb.Router do
 
   scope "/", FluxonUIStartWeb do
     pipe_through :browser
-
-    live "/", TodoLive.Index, :index
-    live "/todos", TodoLive.Index, :index
-    live "/todos/new", TodoLive.Form, :new
-    live "/todos/:id", TodoLive.Show, :show
-    live "/todos/:id/edit", TodoLive.Form, :edit
   end
 
   # Other scopes may use custom stacks.
@@ -56,6 +50,11 @@ defmodule FluxonUIStartWeb.Router do
 
     live_session :require_authenticated_user,
       on_mount: [{FluxonUIStartWeb.UserAuth, :require_authenticated}] do
+      live "/", TodoLive.Index, :index
+      live "/todos", TodoLive.Index, :index
+      live "/todos/new", TodoLive.Form, :new
+      live "/todos/:id", TodoLive.Show, :show
+      live "/todos/:id/edit", TodoLive.Form, :edit
       live "/users/settings", UserLive.Settings, :edit
       live "/users/settings/confirm-email/:token", UserLive.Settings, :confirm_email
     end
