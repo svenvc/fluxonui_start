@@ -10,33 +10,41 @@ defmodule FluxonUIStartWeb.TodoLive.Index do
       <.header>
         Listing Todos
         <:actions>
-          <.button variant="primary" navigate={~p"/todos/new"}>
+          <.button variant="solid" navigate={~p"/todos/new"}>
             <.icon name="hero-plus" /> New Todo
           </.button>
         </:actions>
       </.header>
 
-      <.table
-        id="todos"
-        rows={@streams.todos}
-        row_click={fn {_id, todo} -> JS.navigate(~p"/todos/#{todo}") end}
-      >
-        <:col :let={{_id, todo}} label="Description">{todo.description}</:col>
-        <:col :let={{_id, todo}} label="Due">{todo.due}</:col>
-        <:action :let={{_id, todo}}>
-          <div class="sr-only">
-            <.link navigate={~p"/todos/#{todo}"}>Show</.link>
-          </div>
-          <.link navigate={~p"/todos/#{todo}/edit"}>Edit</.link>
-        </:action>
-        <:action :let={{id, todo}}>
-          <.link
-            phx-click={JS.push("delete", value: %{id: todo.id}) |> hide("##{id}")}
-            data-confirm="Are you sure?"
+      <.table id="todos">
+        <.table_head>
+          <:col>Description</:col>
+          <:col>Due</:col>
+          <:col>Actions</:col>
+        </.table_head>
+        <.table_body>
+          <.table_row
+            :for={todo <- @todos}
+            id={"todo-#{todo.id}"}
+            phx-click={JS.navigate(~p"/todos/#{todo}")}
+            phx-value-id={todo.id}
+            class="cursor-pointer hover:bg-accent/50"
           >
-            Delete
-          </.link>
-        </:action>
+            <:cell>{todo.description}</:cell>
+            <:cell>{todo.due}</:cell>
+            <:cell>
+              <.link navigate={~p"/todos/#{todo}"}>Show</.link>
+              | <.link navigate={~p"/todos/#{todo}/edit"}>Edit</.link>
+              |
+              <.link
+                phx-click={JS.push("delete", value: %{id: todo.id})}
+                data-confirm="Are you sure?"
+              >
+                Delete
+              </.link>
+            </:cell>
+          </.table_row>
+        </.table_body>
       </.table>
     </Layouts.app>
     """
@@ -47,7 +55,7 @@ defmodule FluxonUIStartWeb.TodoLive.Index do
     {:ok,
      socket
      |> assign(:page_title, "Listing Todos")
-     |> stream(:todos, list_todos())}
+     |> assign(:todos, list_todos())}
   end
 
   @impl true
@@ -55,7 +63,7 @@ defmodule FluxonUIStartWeb.TodoLive.Index do
     todo = Todos.get_todo!(id)
     {:ok, _} = Todos.delete_todo(todo)
 
-    {:noreply, stream_delete(socket, :todos, todo)}
+    {:noreply, assign(socket, :todos, list_todos())}
   end
 
   defp list_todos() do

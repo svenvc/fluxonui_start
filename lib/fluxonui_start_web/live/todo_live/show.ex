@@ -14,7 +14,7 @@ defmodule FluxonUIStartWeb.TodoLive.Show do
           <.button navigate={~p"/todos"}>
             <.icon name="hero-arrow-left" />
           </.button>
-          <.button variant="primary" navigate={~p"/todos/#{@todo}/edit?return_to=show"}>
+          <.button variant="solid" navigate={~p"/todos/#{@todo}/edit?return_to=show"}>
             <.icon name="hero-pencil-square" /> Edit todo
           </.button>
         </:actions>
