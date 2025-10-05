@@ -2,9 +2,28 @@
 
 A standard Elixir Phoenix LiveView project adapted to use Fluxon UI
 
+## Running this example
 
-## Steps
+Make sure that the following are true:
 
+- Elixir and Phoenix are installed
+- PostgreSQL is running and is accessible
+- Fluxon UI is installed
+
+```console
+$ mix setup
+$ iex -S mix phx.server
+```
+
+Go to http://localhost:4000 and register for an account,
+you will receive an email in http://localhost:4000/dev/mailbox,
+now you can create a password or keep logging in via email.
+
+
+## How this repository was created
+
+These detailed steps and corresponding commits show exactly 
+what was done to create this example.
 
 ### Create a new project repository on GitHub
 
